@@ -51,7 +51,7 @@ Avoid hardcoding styles. Instead, reference the design token variables in your c
 
 ### Brand Color Tokens
 * **Primary Crimson Red**: `var(--color-primary)` (Hover: `var(--color-primary-hover)`)
-* **Heritage Academic Gold**: `var(--color-accent)`
+* **Heritage Academic Gold**: `var(--color-secondary)`
 * **Standard Background**: `var(--color-background)`
 * **Standard Surface Card**: `var(--color-surface)`
 * **High Contrast Text**: `var(--color-text-primary)`
@@ -84,8 +84,8 @@ Use these spacing variables to keep borders, gaps, margins, and padding fully un
 <!-- Secondary Outline Action -->
 <button class="btn btn-secondary">Cancel</button>
 
-<!-- Accent Gold Action -->
-<button class="btn btn-accent">Explore Campus</button>
+<!-- secondary Gold Action -->
+<button class="btn btn-secondary">Explore Campus</button>
 ```
 
 ### 2. High-Fidelity Input Fields
