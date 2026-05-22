@@ -1,0 +1,1960 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internship Project - UI Kit & Design System</title>
+
+    <!-- Google Fonts for premium typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Core Design System Frameworks -->
+    <link rel="stylesheet" href="design-tokens.css" />
+    <link rel="stylesheet" href="components.css" />
+
+    <style>
+      /* -----------------------------------------------------------
+     * Custom Layout overrides specific to the documentation viewer
+     * ----------------------------------------------------------- */
+      :root {
+        --sidebar-width: 260px;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      /* Copy notification bubble */
+      .toast-container {
+        position: fixed;
+        bottom: var(--space-lg);
+        right: var(--space-lg);
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-xs);
+        pointer-events: none;
+      }
+      .toast-msg {
+        background-color: #1e293b;
+        color: #ffffff;
+        padding: var(--space-sm) var(--space-md);
+        border-radius: var(--radius-md);
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-semibold);
+        box-shadow: var(--shadow-lg);
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all var(--transition-normal);
+        display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+      }
+      .toast-msg.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      /* Tab Layout and content switches */
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+        animation: fadeIn var(--transition-normal) forwards;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Swatch blocks */
+      .color-swatch-card {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        background-color: var(--color-surface);
+        box-shadow: var(--shadow-sm);
+        transition: transform var(--transition-fast);
+        cursor: pointer;
+      }
+      .color-swatch-card:hover {
+        transform: scale(1.02);
+      }
+      .swatch-display {
+        height: 90px;
+        width: 100%;
+        position: relative;
+      }
+      .swatch-details {
+        padding: var(--space-sm);
+      }
+      .swatch-hex {
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-bold);
+      }
+
+      /* Code Snippet Card */
+      .snippet-container {
+        margin-top: var(--space-sm);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-border);
+        background-color: var(--color-surface-hover);
+        overflow: hidden;
+      }
+      .snippet-header {
+        background-color: var(--color-border);
+        padding: var(--space-2xs) var(--space-sm);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.75rem;
+        font-family: var(--font-mono);
+      }
+      .btn-copy {
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-semibold);
+        transition: color var(--transition-fast);
+      }
+      .btn-copy:hover {
+        color: var(--color-text-primary);
+      }
+      .snippet-code {
+        padding: var(--space-md);
+        font-family: var(--font-mono);
+        font-size: var(--fs-xs);
+        color: var(--color-text-secondary);
+        white-space: pre-wrap;
+        overflow-x: auto;
+        max-height: 250px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- -----------------------------------------------------------
+   * Main Workspace Wrapper
+   * ----------------------------------------------------------- -->
+    <main class="main-wrapper">
+      <section id="design-tokens-tab" class="tab-content active">
+        <div style="margin-bottom: var(--space-xl)">
+          <h2 class="h1">UI Design Kit</h2>
+        </div>
+
+        <!-- Colors Grid -->
+        <div class="card" style="margin-bottom: var(--space-xl)">
+          <div class="card-header">
+            <h3 class="h4">1. Brand Color Palette</h3>
+            <span class="badge badge-primary">Dynamic HSL System</span>
+          </div>
+          <div class="card-body">
+            <p
+              class="text-muted"
+              style="margin-bottom: var(--space-lg); font-size: var(--fs-sm)"
+            >
+              Click on any swatch card below to instantly copy its CSS variable
+              name or exact HEX value into your clipboard.
+            </p>
+            <div class="grid-12">
+              <!-- Primary -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-primary', '#A01E25')"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-primary)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Primary
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-primary)">
+                    #A01E25
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-primary
+                  </p>
+                </div>
+              </div>
+
+              <!-- Primary Hover -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-primary-hover', '#78141E')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-primary-hover);
+                    border-bottom: 1px solid var(--color-primary-hover);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Primary Hover
+                  </p>
+                  <p class="swatch-hex">#78141E</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-primary-hover
+                  </p>
+                </div>
+              </div>
+
+              <!-- Primary Active -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-primary-active', '#78141E')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-primary-active);
+                    border-bottom: 1px solid var(--color-border);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Primary Active
+                  </p>
+                  <p class="swatch-hex">#78141E</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-primary-active
+                  </p>
+                </div>
+              </div>
+
+              <!-- Primary Soft -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-primary-soft', '#FFD5D9')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-primary-soft);
+                    border-bottom: 1px solid var(--color-primary-soft);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Primary Soft
+                  </p>
+                  <p class="swatch-hex">#FFD5D9</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-primary-soft
+                  </p>
+                </div>
+              </div>
+
+              <!-- Vitality -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-vitality', '#ED1C24')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-vitality);
+                    border-bottom: 1px solid var(--color-vitality);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Vitality
+                  </p>
+                  <p class="swatch-hex">#ED1C24</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-vitality
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-full"></div>
+
+              <!-- Secondary -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-secondary', '#D97706')"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-secondary)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Secondary
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-secondary)">
+                    #D97706
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-secondary
+                  </p>
+                </div>
+              </div>
+
+              <!-- Secondary Hover -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-secondary-hover', '#BD6704')"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-secondary-hover)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Secondary Hover
+                  </p>
+                  <p
+                    class="swatch-hex"
+                    style="color: var(--color-secondary-hover)"
+                  >
+                    #BD6704
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-secondary-hover
+                  </p>
+                </div>
+              </div>
+
+              <!-- Secondary Active -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-secondary-active', '#B56406')"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-secondary-active)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Secondary Active
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-secondary)">
+                    #B56406
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-secondary-active
+                  </p>
+                </div>
+              </div>
+
+              <!-- Secondary Soft -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-secondary-soft', '#F5C690')"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-secondary-soft)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Secondary Soft
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-secondary)">
+                    #F5C690
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-secondary-soft
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-full"></div>
+
+              <!-- Surface Card -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-surface', '#FFFFFF')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-surface);
+                    border-bottom: 1px solid var(--color-border);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Surface Card
+                  </p>
+                  <p class="swatch-hex">#FFFFFF</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-surface
+                  </p>
+                </div>
+              </div>
+
+              <!-- Surface Hover -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-surface-hover', '#F1F5F9')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-surface-hover);
+                    border-bottom: 1px solid var(--color-surface-hover);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Surface Hover
+                  </p>
+                  <p class="swatch-hex">#F1F5F9</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-surface-hover
+                  </p>
+                </div>
+              </div>
+
+              <!-- Surface Active -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-surface-active', '#F1F5F9')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-surface-active);
+                    border-bottom: 1px solid var(--color-surface-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Surface Active
+                  </p>
+                  <p class="swatch-hex">#F1F5F9</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-surface-active
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-full"></div>
+
+              <!-- Border Color -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-border', '#E2E8F0')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-border);
+                    border-bottom: 1px solid var(--color-border-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Border Color
+                  </p>
+                  <p class="swatch-hex">#E2E8F0</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-border
+                  </p>
+                </div>
+              </div>
+
+              <!-- Border Hover -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-border-hover', '#CBD5E1')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-border-hover);
+                    border-bottom: 1px solid var(--color-border-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Border Hover
+                  </p>
+                  <p class="swatch-hex">#CBD5E1</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-border-hover
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-full"></div>
+              <!-- Text Primary -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-text-primary', '#0F172A')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-text-primary);
+                    border-bottom: 1px solid var(--color-border-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Color Text Primary
+                  </p>
+                  <p class="swatch-hex">#0F172A</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-text-primary
+                  </p>
+                </div>
+              </div>
+
+              <!-- Text Secondary -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-text-secondary', '#475569')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-text-secondary);
+                    border-bottom: 1px solid var(--color-border-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Color Text Secondary
+                  </p>
+                  <p class="swatch-hex">#475569</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-text-secondary
+                  </p>
+                </div>
+              </div>
+
+              <!-- Text Tertiary -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-text-tertiary', '#94A3B8')"
+              >
+                <div
+                  class="swatch-display"
+                  style="
+                    background-color: var(--color-text-tertiary);
+                    border-bottom: 1px solid var(--color-border-active);
+                  "
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Color Text Tertiary
+                  </p>
+                  <p class="swatch-hex">#94A3B8</p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-text-tertiary
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-span-full"></div>
+              <!-- Success -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-success', '#059669')"
+                style="margin-top: var(--space-md)"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-success)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Success Emerald
+                  </p>
+                  <p
+                    class="swatch-hex"
+                    style="color: var(--color-success-text)"
+                  >
+                    #059669
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-success
+                  </p>
+                </div>
+              </div>
+
+              <!-- Warning -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-warning', '#D97706')"
+                style="margin-top: var(--space-md)"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-warning)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Warning Amber
+                  </p>
+                  <p
+                    class="swatch-hex"
+                    style="color: var(--color-warning-text)"
+                  >
+                    #D97706
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-warning
+                  </p>
+                </div>
+              </div>
+
+              <!-- Error -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-error', '#DC2626')"
+                style="margin-top: var(--space-md)"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-error)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Error Crimson
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-error-text)">
+                    #DC2626
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-error
+                  </p>
+                </div>
+              </div>
+
+              <!-- Info -->
+              <div
+                class="col-3 color-swatch-card"
+                onclick="copyValue('--color-info', '#2563EB')"
+                style="margin-top: var(--space-md)"
+              >
+                <div
+                  class="swatch-display"
+                  style="background-color: var(--color-info)"
+                ></div>
+                <div class="swatch-details">
+                  <p
+                    style="font-weight: var(--fw-bold); font-size: var(--fs-sm)"
+                  >
+                    Info Blue
+                  </p>
+                  <p class="swatch-hex" style="color: var(--color-info-text)">
+                    #2563EB
+                  </p>
+                  <p class="text-muted" style="font-size: 0.65rem">
+                    --color-info
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography System and Hierarchy -->
+        <div class="grid-2" style="margin-bottom: var(--space-xl)">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="h4">2. Typography scale</h3>
+              <span class="badge badge-secondary">Google Fonts</span>
+            </div>
+            <div class="card-body">
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-primary">Heading 1</span>
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Plus Jakarta Sans</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >2.25rem (36px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Bold (700)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-3xl</span
+                    >
+                  </span>
+                </div>
+                <h1
+                  style="
+                    margin: 0;
+                    font-family: var(--font-headings);
+                    font-size: var(--fs-3xl);
+                    font-weight: var(--fw-bold);
+                    line-height: var(--lh-3xl);
+                  "
+                >
+                  Somaiya Education
+                </h1>
+              </div>
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-primary">Heading 2</span>
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Plus Jakarta Sans</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >1.875rem (30px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Bold (700)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-2xl</span
+                    >
+                  </span>
+                </div>
+                <h2>Future Ready Engineer</h2>
+              </div>
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-primary">Heading 3</span>
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Plus Jakarta Sans</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >1.5rem (24px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Bold (700)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-xl</span
+                    >
+                  </span>
+                </div>
+                <h3>Admissions Open 2026</h3>
+              </div>
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-primary">Heading 4</span>
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Plus Jakarta Sans</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >1.25rem (20px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Bold (700)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-lg</span
+                    >
+                  </span>
+                </div>
+                <h4>BTech in Computer Engineering</h4>
+              </div>
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-secondary"
+                    >Lead Body</span
+                  >
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Inter</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >1.125rem (18px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Regular (400)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-md</span
+                    >
+                  </span>
+                </div>
+                <p class="lead">
+                  Vidya Vihar campus houses state-of-the-art labs.
+                </p>
+              </div>
+              <div
+                class="type-visual-row"
+                style="
+                  display: flex;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: var(--space-2xs);
+                  padding: var(--space-sm) 0;
+                  border-bottom: none;
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                  "
+                >
+                  <span class="badge badge-pill badge-secondary"
+                    >Standard Body</span
+                  >
+                  <span
+                    style="
+                      font-family: var(--font-mono);
+                      font-size: var(--fs-xs);
+                      color: var(--color-text-tertiary);
+                    "
+                  >
+                    Family:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Inter</span
+                    >
+                    | Size:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >0.875rem (14px)</span
+                    >
+                    | Weight:
+                    <span
+                      style="
+                        color: var(--color-text-secondary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >Regular (400)</span
+                    >
+                    | Token:
+                    <span
+                      style="
+                        color: var(--color-primary);
+                        font-weight: var(--fw-bold);
+                      "
+                      >--fs-sm</span
+                    >
+                  </span>
+                </div>
+                <p>
+                  Knowledge alone liberates. Empowering students for global
+                  challenges.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Spacing, Shadows, Radii -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="h4">3. Spatial Systems & Radii</h3>
+              <span class="badge badge-info">Obsidian Spacing Grid</span>
+            </div>
+            <div
+              class="card-body"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: var(--space-md);
+              "
+            >
+              <!-- Spacing scale -->
+              <div>
+                <p class="form-label" style="margin-bottom: var(--space-xs)">
+                  4px Grid Base Padding / Margins
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 6px">
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: var(--space-sm);
+                    "
+                  >
+                    <div
+                      style="
+                        background-color: var(--color-primary);
+                        height: 12px;
+                        width: var(--space-xs);
+                        border-radius: 2px;
+                      "
+                    ></div>
+                    <span class="text-muted" style="font-size: var(--fs-xs)"
+                      >--space-xs: 8px (0.5rem)</span
+                    >
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: var(--space-sm);
+                    "
+                  >
+                    <div
+                      style="
+                        background-color: var(--color-primary);
+                        height: 12px;
+                        width: var(--space-md);
+                        border-radius: 2px;
+                      "
+                    ></div>
+                    <span class="text-muted" style="font-size: var(--fs-xs)"
+                      >--space-md: 16px (1rem)</span
+                    >
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: var(--space-sm);
+                    "
+                  >
+                    <div
+                      style="
+                        background-color: var(--color-primary);
+                        height: 12px;
+                        width: var(--space-lg);
+                        border-radius: 2px;
+                      "
+                    ></div>
+                    <span class="text-muted" style="font-size: var(--fs-xs)"
+                      >--space-lg: 24px (1.5rem)</span
+                    >
+                  </div>
+                  <div
+                    style="
+                      display: flex;
+                      align-items: center;
+                      gap: var(--space-sm);
+                    "
+                  >
+                    <div
+                      style="
+                        background-color: var(--color-primary);
+                        height: 12px;
+                        width: var(--space-xl);
+                        border-radius: 2px;
+                      "
+                    ></div>
+                    <span class="text-muted" style="font-size: var(--fs-xs)"
+                      >--space-xl: 32px (2rem)</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <hr
+                style="border: none; border-top: 1px solid var(--color-border)"
+              />
+
+              <!-- Border radius systems -->
+              <div>
+                <p class="form-label" style="margin-bottom: var(--space-xs)">
+                  Border Radii Scale
+                </p>
+                <div style="display: flex; gap: var(--space-sm)">
+                  <div
+                    style="
+                      border: 2px solid var(--color-border);
+                      border-radius: var(--radius-sm);
+                      padding: var(--space-xs);
+                      font-size: var(--fs-xs);
+                      font-weight: bold;
+                      width: 60px;
+                      text-align: center;
+                    "
+                  >
+                    XS
+                  </div>
+                  <div
+                    style="
+                      border: 2px solid var(--color-border);
+                      border-radius: var(--radius-md);
+                      padding: var(--space-xs);
+                      font-size: var(--fs-xs);
+                      font-weight: bold;
+                      width: 60px;
+                      text-align: center;
+                    "
+                  >
+                    MD
+                  </div>
+                  <div
+                    style="
+                      border: 2px solid var(--color-border);
+                      border-radius: var(--radius-lg);
+                      padding: var(--space-xs);
+                      font-size: var(--fs-xs);
+                      font-weight: bold;
+                      width: 60px;
+                      text-align: center;
+                    "
+                  >
+                    LG
+                  </div>
+                  <div
+                    style="
+                      border: 2px solid var(--color-border);
+                      border-radius: var(--radius-xl);
+                      padding: var(--space-xs);
+                      font-size: var(--fs-xs);
+                      font-weight: bold;
+                      width: 60px;
+                      text-align: center;
+                    "
+                  >
+                    XL
+                  </div>
+                </div>
+              </div>
+
+              <hr
+                style="border: none; border-top: 1px solid var(--color-border)"
+              />
+
+              <!-- Shadow elevations -->
+              <div>
+                <p class="form-label" style="margin-bottom: var(--space-xs)">
+                  Shadow elevations
+                </p>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: var(--space-sm);
+                  "
+                >
+                  <div
+                    style="
+                      background: var(--color-surface);
+                      padding: var(--space-sm);
+                      border-radius: var(--radius-md);
+                      box-shadow: var(--shadow-sm);
+                      font-size: 0.7rem;
+                      text-align: center;
+                      border: 1px solid var(--color-border);
+                    "
+                  >
+                    Flat (--shadow-sm)
+                  </div>
+                  <div
+                    style="
+                      background: var(--color-surface);
+                      padding: var(--space-sm);
+                      border-radius: var(--radius-md);
+                      box-shadow: var(--shadow-md);
+                      font-size: 0.7rem;
+                      text-align: center;
+                    "
+                  >
+                    Raised (--shadow-md)
+                  </div>
+                  <div
+                    style="
+                      background: var(--color-surface);
+                      padding: var(--space-sm);
+                      border-radius: var(--radius-md);
+                      box-shadow: var(--shadow-lg);
+                      font-size: 0.7rem;
+                      text-align: center;
+                    "
+                  >
+                    Overlay (--shadow-lg)
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8">
+          <div class="gap-8">
+            <!-- Buttons card -->
+            <div class="card" style="margin-bottom: var(--space-lg)">
+              <div class="card-header">
+                <h3 class="h5">Buttons & CTA Toggles</h3>
+              </div>
+              <div class="card-body">
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--space-sm);
+                    margin-bottom: var(--space-md);
+                  "
+                >
+                  <button class="btn btn-primary">Primary Button</button>
+                  <button class="btn btn-primary" disabled>
+                    Disabled Primary Button
+                  </button>
+                  <button class="btn btn-secondary">Secondary Button</button>
+                  <button class="btn btn-secondary" disabled>
+                    Disabled Secondary Button
+                  </button>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--space-sm);
+                    margin-bottom: var(--space-md);
+                  "
+                >
+                  <button class="btn btn-success" id="btnEx4">
+                    <i data-lucide="circle-check-big"></i>
+                    Approve Application
+                  </button>
+                  <button class="btn btn-danger" id="btnEx5">
+                    <i data-lucide="ban"></i> Reject
+                  </button>
+                </div>
+
+                <!-- Code copy snippet -->
+                <div class="snippet-container">
+                  <div class="snippet-header">
+                    <span>HTML Code Structure</span>
+                    <button
+                      class="btn-copy"
+                      onclick="copySnippet('html-btn-snippet')"
+                    >
+                      <svg
+                        width="12"
+                        height="12"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                        />
+                      </svg>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                  <pre class="snippet-code" id="html-btn-snippet">
+&lt;!-- Primary Action --&gt;
+&lt;button class="btn btn-primary"&gt;Apply Now&lt;/button&gt;
+
+&lt;!-- Secondary Action --&gt;
+&lt;button class="btn btn-secondary"&gt;Cancel&lt;/button&gt;
+
+&lt;!-- secondary Highlight --&gt;
+&lt;button class="btn btn-secondary"&gt;Explore Campus&lt;/button&gt;</pre
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Badges and Table Components -->
+            <div class="col-6 card" style="margin-bottom: var(--space-lg)">
+              <div class="card-header">
+                <h3 class="h5">Badges, Micro-chips & Statuses</h3>
+              </div>
+              <div class="card-body">
+                <p class="form-label" style="margin-bottom: var(--space-xs)">
+                  Interactive Badges (Clickable / Outlined / Pill)
+                </p>
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--space-xs);
+                    margin-bottom: var(--space-md);
+                  "
+                >
+                  <span class="badge badge-primary">Admissions Open</span>
+                  <span class="badge badge-secondary">Scholarship</span>
+                  <span class="badge badge-success">Approved</span>
+                  <span class="badge badge-warning">Pending Review</span>
+                  <span class="badge badge-danger">Rejected</span>
+                  <span class="badge badge-info">Interview scheduled</span>
+                </div>
+
+                <p class="form-label" style="margin-bottom: var(--space-xs)">
+                  Solid Pill Badges (For counts and lists)
+                </p>
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--space-xs);
+                    margin-bottom: var(--space-md);
+                  "
+                >
+                  <span class="badge badge-pill badge-solid badge-primary"
+                    >5 Applicants</span
+                  >
+                  <span class="badge badge-pill badge-solid badge-success"
+                    >98% Verified</span
+                  >
+                  <span class="badge badge-pill badge-solid badge-danger"
+                    >8 Errors</span
+                  >
+                </div>
+
+                <!-- Snippet -->
+                <div class="snippet-container">
+                  <div class="snippet-header">
+                    <span>Badge Markup</span>
+                    <button
+                      class="btn-copy"
+                      onclick="copySnippet('html-badge-snippet')"
+                    >
+                      <svg
+                        width="12"
+                        height="12"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                        />
+                      </svg>
+                      <span>Copy</span>
+                    </button>
+                  </div>
+                  <pre class="snippet-code" id="html-badge-snippet">
+                  &lt;!-- Soft Badge --&gt;
+                  &lt;span class="badge badge-success"&gt;Approved&lt;/span&gt;
+
+                  &lt;!-- Pill Solid Badge --&gt;
+                  &lt;span class="badge badge-pill badge-solid badge-primary"&gt;5 Applicants&lt;/span&gt;</pre
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form fields and Validation -->
+          <div class="card" style="margin-bottom: var(--space-lg)">
+            <div class="card-header">
+              <h3 class="h5">Forms & Custom Inputs</h3>
+            </div>
+            <div class="card-body">
+              <div class="form-group">
+                <label class="form-label" for="inpName">Full Name</label>
+                <input
+                  type="text"
+                  id="inpName"
+                  class="form-control"
+                  placeholder="e.g. Aarav Sharma"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="inpCampus">Select Campus</label>
+                <select id="inpCampus" class="form-control">
+                  <option value="vidyavihar">Vidyavihar Campus (Main)</option>
+                  <option value="ayurvihar">Ayurvihar Campus</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-top: var(--space-sm)">
+                <label class="form-label" for="valInput"
+                  >Enrollment ID (Validation State)</label
+                >
+                <input
+                  type="text"
+                  id="valInput"
+                  class="form-control is-invalid"
+                  value="SOMAIYA-ABC-123"
+                />
+                <span class="invalid-feedback"
+                  >Format incorrect. Must begin with SVU-.</span
+                >
+              </div>
+
+              <div class="form-group" style="margin-top: var(--space-sm)">
+                <label class="form-label" for="valInput">Address</label>
+                <textarea
+                  class="form-control"
+                  placeholder="Enter your address"
+                ></textarea>
+              </div>
+
+              <!-- Checks and iOS Switch -->
+              <div
+                style="
+                  display: flex;
+                  gap: var(--space-lg);
+                  margin: var(--space-sm) 0;
+                "
+              >
+                <label class="form-checkbox">
+                  <input
+                    type="checkbox"
+                    checked
+                    class="interactive-element"
+                    id="chkEx"
+                  />
+                  <span class="checkbox-indicator"></span>
+                  <span>Accept Terms</span>
+                </label>
+
+                <label class="form-switch">
+                  <input
+                    type="checkbox"
+                    checked
+                    class="interactive-element"
+                    id="swEx"
+                  />
+                  <span class="switch-track"></span>
+                  <span>Save Data</span>
+                </label>
+              </div>
+              <div class="flex gap-2 justify-start !py-[10px]">
+                <label class="form-radio">
+                  <input type="radio" name="course" />
+                  <span class="radio-indicator"></span>
+                  <span>Computer Engineering</span>
+                </label>
+                <label class="form-radio">
+                  <input type="radio" name="course" />
+                  <span class="radio-indicator"></span>
+                  <span>Electronics Engineering</span>
+                </label>
+              </div>
+              <button class="btn form-btn">
+                <i data-lucide="circle-check"></i> Submit Application
+              </button>
+              <!-- Snippet -->
+              <div class="snippet-container">
+                <div class="snippet-header">
+                  <span>HTML Code Structure</span>
+                  <button
+                    class="btn-copy"
+                    onclick="copySnippet('html-form-snippet')"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
+                      />
+                    </svg>
+                    <span>Copy</span>
+                  </button>
+                </div>
+                <pre class="snippet-code" id="html-form-snippet">
+&lt;div class="form-group"&gt;
+  &lt;label class="form-label" for="inpName"&gt;Full Name&lt;/label&gt;
+  &lt;input type="text" id="inpName" class="form-control" placeholder="Aarav Sharma"&gt;
+&lt;/div&gt;
+
+&lt;!-- iOS Switch Toggle --&gt;
+&lt;label class="form-switch"&gt;
+  &lt;input type="checkbox" checked&gt;
+  &lt;span class="switch-track"&gt;&lt;/span&gt;
+  &lt;span&gt;Enable Option&lt;/span&gt;
+&lt;/label&gt;</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <!-- Overlays (Modal & Dropdown) -->
+          <div class="card" style="margin-bottom: var(--space-lg)">
+            <div class="card-header">
+              <h3 class="h5">Alerts & Interactive Modals</h3>
+            </div>
+            <div class="card-body">
+              <div class="alert alert-success">
+                <i data-lucide="circle-check"></i>
+                <div class="alert-content">
+                  <div class="alert-title">
+                    Admissions Completed Successfully!
+                  </div>
+                  <div>
+                    Your applicant documentation has been registered. Student ID
+                    generated.
+                  </div>
+                </div>
+                <button
+                  class="alert-close"
+                  onclick="this.parentElement.style.display = 'none'"
+                >
+                  &times;
+                </button>
+              </div>
+
+              <div
+                class="alert alert-info"
+                style="margin-bottom: var(--space-md)"
+              >
+                <i data-lucide="info"></i>
+
+                <div class="alert-content">
+                  <div class="alert-title">IA-2 Start at 3 PM</div>
+                  <div>
+                    Server returned code 500. Unable to store signature payload.
+                  </div>
+                </div>
+              </div>
+              <div
+                class="alert alert-warning"
+                style="margin-bottom: var(--space-md)"
+              >
+                <i data-lucide="triangle-alert"></i>
+
+                <div class="alert-content">
+                  <div class="alert-title">Student Performance Decline</div>
+                  <div>
+                    Server returned code 500. Unable to store signature payload.
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="alert alert-danger"
+                style="margin-bottom: var(--space-md)"
+              >
+                <i data-lucide="octagon-alert"></i>
+
+                <div class="alert-content">
+                  <div class="alert-title">Error Processing Application</div>
+                  <div>
+                    Server returned code 500. Unable to store signature payload.
+                  </div>
+                </div>
+              </div>
+
+              <div
+                style="
+                  background-color: rgba(15, 23, 42, 0.45);
+                  display: flex;
+                  justify-content: center;
+                  border-radius: 10px;
+                  margin: 10px 0px;
+                "
+                onclick="closeDemoModalOutside(event)"
+              >
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h3 class="h4" style="color: var(--color-text-primary)">
+                      Enroll New Student Candidate
+                    </h3>
+                    <button class="modal-close" onclick="closeDemoModal()">
+                      &times;
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p style="margin-bottom: var(--space-md)">
+                      Please populate the details of the candidate for rapid
+                      academic onboarding. Document checks will trigger
+                      automatically.
+                    </p>
+
+                    <div class="form-group">
+                      <label class="form-label" for="modStudentName"
+                        >Full Student Name</label
+                      >
+                      <input
+                        type="text"
+                        id="modStudentName"
+                        class="form-control"
+                        placeholder="Aarav Sharma"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="modCourse"
+                        >Engineering Stream Preference</label
+                      >
+                      <select id="modCourse" class="form-control">
+                        <option value="comp">Computer Engineering</option>
+                        <option value="it">Information Technology</option>
+                        <option value="extc">Electronics & Telecom</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      class="btn btn-secondary"
+                      onclick="closeDemoModal()"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      class="btn btn-primary"
+                      onclick="submitRapidEnroll()"
+                    >
+                      Register & Onboard
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="btn btn-primary"
+                onclick="openDemoModal()"
+                style="width: 100%; margin-bottom: var(--space-sm)"
+              >
+                Trigger Animated Modal Dialog
+              </button>
+
+              <!-- Modal Markup Structure Showcase -->
+              <div class="snippet-container">
+                <div class="snippet-header">
+                  <span>Modal Code Setup</span>
+                </div>
+                <pre class="snippet-code" id="html-modal-snippet">
+&lt;!-- Backdrop Mask --&gt;
+&lt;div class="modal-backdrop" id="customModal"&gt;
+  &lt;div class="modal-content"&gt;
+    &lt;div class="modal-header"&gt;
+      &lt;h3 class="h4"&gt;Modal Dialog Header&lt;/h3&gt;
+      &lt;button class="modal-close" onclick="closeModal()"&gt;&amp;times;&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-body"&gt;
+      &lt;p&gt;Context body goes here...&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="modal-footer"&gt;
+      &lt;button class="btn btn-secondary" onclick="closeModal()"&gt;Close&lt;/button&gt;
+      &lt;button class="btn btn-primary"&gt;Save Changes&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Segmented Controls & Steps Wizard Showcase -->
+          <div class="col-6 card" style="margin-bottom: var(--space-lg)">
+            <div class="card-header">
+              <h3 class="h5">Navigation Tabs & Step Indicator</h3>
+            </div>
+            <div class="card-body">
+              <p class="form-label" style="margin-bottom: var(--space-xs)">
+                Sliding Segmented Controls
+              </p>
+              <div
+                class="segmented-control"
+                style="margin-bottom: var(--space-md)"
+              >
+                <button
+                  class="segmented-item active"
+                  onclick="
+                    this.parentElement
+                      .querySelector('.active')
+                      .classList.remove('active');
+                    this.classList.add('active');
+                  "
+                >
+                  Overview
+                </button>
+                <button
+                  class="segmented-item"
+                  onclick="
+                    this.parentElement
+                      .querySelector('.active')
+                      .classList.remove('active');
+                    this.classList.add('active');
+                  "
+                >
+                  Admissions
+                </button>
+                <button
+                  class="segmented-item"
+                  onclick="
+                    this.parentElement
+                      .querySelector('.active')
+                      .classList.remove('active');
+                    this.classList.add('active');
+                  "
+                >
+                  Settings
+                </button>
+              </div>
+
+              <p class="form-label" style="margin-bottom: var(--space-xs)">
+                Wizard Progress Steps
+              </p>
+              <div
+                class="step-indicator"
+                style="
+                  margin-top: var(--space-sm);
+                  margin-bottom: var(--space-md);
+                "
+              >
+                <div class="step-item completed">
+                  <div class="step-bubble">✓</div>
+                  <div class="step-label">Personal</div>
+                </div>
+                <div class="step-item active">
+                  <div class="step-bubble">2</div>
+                  <div class="step-label">Documents</div>
+                </div>
+                <div class="step-item">
+                  <div class="step-bubble">3</div>
+                  <div class="step-label">Verification</div>
+                </div>
+              </div>
+
+              <!-- Snippet -->
+              <div class="snippet-container">
+                <div class="snippet-header">
+                  <span>Wizard and Segmented markup</span>
+                </div>
+                <pre class="snippet-code" id="html-segmented-snippet">
+&lt;!-- Segmented Switch --&gt;
+&lt;div class="segmented-control"&gt;
+  &lt;button class="segmented-item active"&gt;Overview&lt;/button&gt;
+  &lt;button class="segmented-item"&gt;Settings&lt;/button&gt;
+&lt;/div&gt;</pre
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="demoModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="h4" style="color: var(--color-text-primary)">
+            Enroll New Student Candidate
+          </h3>
+          <button class="modal-close" onclick="closeDemoModal()">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="margin-bottom: var(--space-md)">
+            Please populate the details of the candidate for rapid academic
+            onboarding. Document checks will trigger automatically.
+          </p>
+
+          <div class="form-group">
+            <label class="form-label" for="modStudentName"
+              >Full Student Name</label
+            >
+            <input
+              type="text"
+              id="modStudentName"
+              class="form-control"
+              placeholder="Aarav Sharma"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modCourse"
+              >Engineering Stream Preference</label
+            >
+            <select id="modCourse" class="form-control">
+              <option value="comp">Computer Engineering</option>
+              <option value="it">Information Technology</option>
+              <option value="extc">Electronics & Telecom</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" onclick="closeDemoModal()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="submitRapidEnroll()">
+            Register & Onboard
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+
+    <!-- Core Javascript Controller -->
+    <script src="app.js"></script>
+  </body>
+</html>
